@@ -89,14 +89,10 @@ class Producto{
 };
 class Tienda{
 //---------Atributos----------------
-public:
-	ifstream archLectura;
-	ofstream archEscritura;
 //---------Metodos----------------
 public:
 	Tienda(){
-		archLectura.open("productos.txt",ios::in);
-		archLectura.open("productos.txt",ios::in);
+
 	}
 	int  mostrarMenu(){
 		printf(" ========================MENU========================\n");
@@ -107,7 +103,7 @@ public:
 		printf(" 5)	Terminar\n");
 		printf(" Tecle su opcion: ");
 		char selec;
-		selec=getch();
+		selec=getch();//capurar un char
 		printf("\n" );
 		switch (selec) {
 			case '1':
@@ -150,7 +146,7 @@ public:
 		int iprecio=0;
 		Producto nuevoProducto;
 		if(strlen(clave)<6){
-			iclave=atoi(clave);
+			iclave=atoi(clave);//convertir String a int
 		}
 		if(strlen(existencia)<7){
 			iexistencia=atoi(existencia);
@@ -174,19 +170,19 @@ public:
 	}
 	void agregarProducto(Producto nuevoProducto){
 		ofstream archEscritura;
-		archEscritura.open("alumnos.txt",ios::app);
+		archEscritura.open("productos.txt",ios::app);
 		if(!validarClave(nuevoProducto.clave)){
 			archEscritura <<nuevoProducto.clave <<" " <<nuevoProducto.nombre <<" " <<nuevoProducto.familia <<" " <<nuevoProducto.existencia <<" " <<nuevoProducto.precio <<"\n";
 			printf("Producto Agregado\n" );
 		}
 		else{
-			printf("Clave duplicada\n");
+			printf("Error: Clave duplicada, el producto no fue agregado \n");
 		}
 		archEscritura.close();
 	}
 	bool validarClave(int clave){
 		ifstream archLectura;
-		archLectura.open("alumnos.txt",ios::in);
+		archLectura.open("productos.txt",ios::in);
 		Producto aux;
 		while (!archLectura.eof()){
 			archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
@@ -205,11 +201,11 @@ public:
 		printf("\nIntroduzca la clave del producto: " );gets(clave);
 		int iclave=atoi(clave);
 		ifstream archLectura;
-		archLectura.open("alumnos.txt",ios::in);
+		archLectura.open("productos.txt",ios::in);
 		Producto aux;
-		while (!archLectura.eof()){
+		while (!archLectura.eof()){//ejecutar mientras no llegue al final del archivo
 			archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
-			if (iclave==aux.clave) {
+			if (iclave==aux.clave&&!archLectura.eof()) {
 				aux.muestra();
 				archLectura.close();
 				return 0;
@@ -220,11 +216,12 @@ public:
 	}
 	void mostrarProductos(){
 		ifstream archLectura;
-		archLectura.open("alumnos.txt",ios::in);
+		archLectura.open("productos.txt",ios::in);
 		Producto aux;
 		while (!archLectura.eof()){
 			archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
-				aux.muestra();
+				if(!archLectura.eof())
+					aux.muestra();
 
 		}
 		archLectura.close();
@@ -232,19 +229,19 @@ public:
 	}
 	void consultaPorFamilia(){
 		char familia[16];
-		bool bandera=false;
+		bool bandera=false;//badera de tipo booleano para detectar si encontramos la familia que buscamos
 		printf("\nIntroduzca la familia del producto: " );gets(familia);
 		ifstream archLectura;
-		archLectura.open("alumnos.txt",ios::in);
+		archLectura.open("productos.txt",ios::in);
 		Producto aux;
 		while (!archLectura.eof()){
 			archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
-			if (strcmp(familia,aux.familia)==0) {
+			if (strcmp(familia,aux.familia)==0&&!archLectura.eof()) {
 				aux.muestra();
 				bandera=true;
 			}
 		}
-	if(!bandera)
+	if(!bandera)//si no hay bandera se imprime: "Familia no encontrada"
 		printf("Familia no encontrada\n" );
 
 	}
