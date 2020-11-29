@@ -80,12 +80,19 @@ class Producto{
     }
 
 		void muestra(){
-			printf("Clave\t: %d\t|",clave);
-			printf("Nombre\t: %s\t|",nombre);
-			printf("Familia\t: %s\t|",familia);
-      printf("Existencia\t: %d\t|",existencia);
-      printf("Precio\t: %d\t|\n",precio);
+			printf(" %d\t|",clave);
+			printf(" %s\t|",nombre);
+			printf(" %s\t|",familia);
+      printf(" %d\t|",existencia);
+      printf(" %d\t|\n",precio);
 			//printf("-----------------------------------\n");
+		}
+		void titulo(){
+			printf("Clave\t|");
+			printf("Nombre\t|");
+			printf("Familia\t|");
+      printf("Existencia\t|");
+      printf("Precio\t|\n");
 		}
 };
 
@@ -143,7 +150,7 @@ void altas(){
 	char existencia[16];
 	char precio[16];
 	printf("\n ================Alta de productos================\n");
-	printf(" Clave\t\t:");gets(clave);
+	printf(" Clave\t\t");gets(clave);
 	printf(" Nombre\t\t:");gets(nombre);
 	printf(" Familia\t:");gets(familia);
 	printf(" Existencia\t:");gets(existencia);
@@ -166,6 +173,7 @@ void altas(){
 		nuevoProducto=Producto(iclave,nombre,familia,iexistencia,iprecio);
 		if((nuevoProducto.precio>0&&nuevoProducto.clave>0&&nuevoProducto.existencia>0)){
 			printf("\nProducto Creado exitosamente\n" );
+			nuevoProducto.titulo();
 			nuevoProducto.muestra();
 			printf("Agregando...\n" );
 			agregarProducto(nuevoProducto);
@@ -213,6 +221,7 @@ int consultaPorClave(){
 	while (!archLectura.eof()){//ejecutar mientras no llegue al final del archivo
 		archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
 		if (iclave==aux.clave&&!archLectura.eof()) {
+			aux.titulo();
 			aux.muestra();
 			archLectura.close();
 			return 0;
@@ -225,6 +234,7 @@ void mostrarProductos(){
 	ifstream archLectura;
 	archLectura.open("productos.txt",ios::in);
 	Producto aux;
+	aux.titulo();
 	while (!archLectura.eof()){
 		archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
 			if(!archLectura.eof())
@@ -241,6 +251,7 @@ void consultaPorFamilia(){
 	ifstream archLectura;
 	archLectura.open("productos.txt",ios::in);
 	Producto aux;
+	aux.titulo();
 	while (!archLectura.eof()){
 		archLectura >>aux.clave >>aux.nombre >>aux.familia >>aux.existencia >>aux.precio;
 		if (strcmp(familia,aux.familia)==0&&!archLectura.eof()) {
